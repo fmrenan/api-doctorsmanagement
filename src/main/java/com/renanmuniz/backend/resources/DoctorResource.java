@@ -61,7 +61,7 @@ public class DoctorResource {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
-		service.delete(id);
+		service.softDelete(id);
 		
 		return ResponseEntity.ok().build();
 	}

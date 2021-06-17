@@ -33,7 +33,7 @@ public class DoctorService {
 	
 	@Transactional(readOnly = true)
 	public List<DoctorDTO> findAll() {
-		List<Doctor> doctors = repository.findAll();
+		List<Doctor> doctors = repository.findAllActive();
 		
 		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());		
 	}
@@ -68,6 +68,19 @@ public class DoctorService {
 			entity = repository.save(entity);
 			
 			return new DoctorDTO(entity, entity.getSpecialties());
+		}catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found: " + id);
+		}
+	}
+	
+	@Transactional
+	public void softDelete(Long id) {
+		try {
+			Doctor entity = repository.getOne(id); 
+						
+			entity.setActive(false);
+			
+			entity = repository.save(entity);
 		}catch (ResourceNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found: " + id);
 		}

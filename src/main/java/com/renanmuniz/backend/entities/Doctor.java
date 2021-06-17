@@ -27,6 +27,7 @@ public class Doctor implements Serializable{
 	private String phone;
 	private String cellPhone;
 	private String cep;
+	private boolean active = true;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "tb_doctor_specialty",
@@ -45,7 +46,14 @@ public class Doctor implements Serializable{
 		this.cep = cep;
 	}
 
-	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public Long getId() {
 		return id;
 	}
