@@ -43,6 +43,10 @@ public class DoctorService {
 		Optional<Doctor> obj = repository.findById(id);
 		Doctor entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 
+		if(!entity.isActive()) {
+			throw new ResourceNotFoundException("Entity not found");
+		}
+		
 		return new DoctorDTO(entity, entity.getSpecialties());
 	}
 	
