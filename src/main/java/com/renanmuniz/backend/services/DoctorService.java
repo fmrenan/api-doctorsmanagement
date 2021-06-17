@@ -1,9 +1,12 @@
 package com.renanmuniz.backend.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,8 @@ import com.renanmuniz.backend.entities.Doctor;
 import com.renanmuniz.backend.entities.Specialty;
 import com.renanmuniz.backend.repository.DoctorRepository;
 import com.renanmuniz.backend.repository.SpecialtyRepository;
+import com.renanmuniz.backend.services.exceptions.DataBaseException;
+import com.renanmuniz.backend.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class DoctorService {
@@ -29,8 +34,17 @@ public class DoctorService {
 		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());		
 	}
 	
+	@Transactional(readOnly = true)
+	public DoctorDTO findById(Long id) {
+		Optional<Doctor> obj = repository.findById(id);
+		Doctor entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+
+		return new DoctorDTO(entity, entity.getSpecialties());
+	}
+	
 	@Transactional
 	public DoctorDTO insert(DoctorDTO dto) {
+		
 		Doctor entity = new Doctor(); 
 		convertDtoToEntity(dto, entity);
 		
@@ -42,17 +56,27 @@ public class DoctorService {
 	
 	@Transactional
 	public DoctorDTO update(Long id, DoctorDTO dto) {
-		Doctor entity = repository.getOne(id); 
-		convertDtoToEntity(dto, entity);
-		
-		entity = repository.save(entity);
-		
-		return new DoctorDTO(entity, entity.getSpecialties());
+		try {
+			Doctor entity = repository.getOne(id); 
+			convertDtoToEntity(dto, entity);
+			
+			entity = repository.save(entity);
+			
+			return new DoctorDTO(entity, entity.getSpecialties());
+		}catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found: " + id);
+		}
 	}
 	
 	@Transactional
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found: " + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataBaseException("Integrity violation");
+		}
 	}
 	
 	private void convertDtoToEntity(DoctorDTO dto, Doctor entity) {

@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.renanmuniz.backend.entities.Doctor;
 import com.renanmuniz.backend.entities.Specialty;
 
@@ -11,12 +16,29 @@ public class DoctorDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	
+	@NotBlank(message = "Não pode ser vazio")
+	@Size(max = 120, message = "Não pode conter mais de 120 caracteres.")
 	private String name;
+	
+	@NotBlank(message = "Não pode ser vazio")
+	@Digits(fraction = 0, integer = 7, message = "Deve ser um número com no máximo 7 dígitos")
 	private String crm;
+	
+	@NotBlank(message = "Não pode ser vazio")
+	@Digits(fraction = 0, integer = 12, message="Deve ser um número com no máximo 12 dígitos")
 	private String phone;
+	
+	@NotBlank(message = "Não pode ser vazio")
+	@Digits(fraction = 0, integer = 12, message="Deve ser um número com no máximo 12 dígitos")
 	private String cellPhone;
+	
+	@NotBlank(message = "Não pode ser vazio")
+	@Digits(fraction = 0, integer = 8, message="Deve ser um número com no máximo 12 dígitos")
 	private String cep;
 	
+	@NotNull
+	@Size(min = 2, message="Deve conter pelo menos duas especialidades")
 	private Set<SpecialtyDTO> specialties = new HashSet<>();
 	
 	public DoctorDTO() {};
