@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.renanmuniz.backend.dto.DoctorDTO;
+import com.renanmuniz.backend.dto.DoctorResponseDTO;
 import com.renanmuniz.backend.services.DoctorService;
 
 @RestController
@@ -42,8 +43,8 @@ public class DoctorResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<DoctorDTO> insert(@Valid @RequestBody DoctorDTO dto){
-		DoctorDTO newDto = service.insert(dto);
+	public ResponseEntity<DoctorResponseDTO> insert(@Valid @RequestBody DoctorDTO dto){
+		DoctorResponseDTO newDto = service.insert(dto);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();

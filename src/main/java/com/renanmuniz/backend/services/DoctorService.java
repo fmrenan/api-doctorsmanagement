@@ -10,7 +10,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renanmuniz.backend.dto.AddressDTO;
 import com.renanmuniz.backend.dto.DoctorDTO;
+import com.renanmuniz.backend.dto.DoctorResponseDTO;
 import com.renanmuniz.backend.dto.SpecialtyDTO;
 import com.renanmuniz.backend.entities.Doctor;
 import com.renanmuniz.backend.entities.Specialty;
@@ -26,6 +28,8 @@ public class DoctorService {
 	private DoctorRepository repository;
 	@Autowired
 	private SpecialtyRepository specialtyRepository;
+	@Autowired
+	private AddressService addressService;
 	
 	@Transactional(readOnly = true)
 	public List<DoctorDTO> findAll() {
@@ -43,15 +47,16 @@ public class DoctorService {
 	}
 	
 	@Transactional
-	public DoctorDTO insert(DoctorDTO dto) {
+	public DoctorResponseDTO insert(DoctorDTO dto) {
 		
 		Doctor entity = new Doctor(); 
 		convertDtoToEntity(dto, entity);
 		
 		entity = repository.save(entity);
 		
+		AddressDTO address = addressService.getAddressByCep(dto.getCep());
 		
-		return new DoctorDTO(entity, entity.getSpecialties());
+		return new DoctorResponseDTO(entity, entity.getSpecialties(), address);
 	}
 	
 	@Transactional
