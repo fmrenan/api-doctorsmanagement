@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,13 @@ public class DoctorService {
 		}
 		
 		return new DoctorDTO(entity, entity.getSpecialties());
+	}
+	
+	@Transactional(readOnly = true)
+	public List<DoctorDTO> search(Specification<Doctor> specs){
+		List<Doctor> doctors = repository.findAll(Specification.where(specs));
+		
+		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());
 	}
 	
 	@Transactional
