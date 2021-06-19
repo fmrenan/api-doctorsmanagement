@@ -16,6 +16,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>, JpaSpecif
 	@Query(value = "SELECT * FROM doctors d WHERE d.active = 'true'", nativeQuery = true)
 	public List<Doctor> findAllActive();
 	
-	@Query(value="select d from Doctor d WHERE :specialty in elements(d.specialties)")
+	@Query(value="SELECT d FROM Doctor d " 
+			+"WHERE :specialty in elements(d.specialties) "
+			+"AND d.active = true")
 	public List<Doctor> findBySpecialty(Specialty specialty);
 }
