@@ -39,6 +39,13 @@ public class DoctorResource {
 		return ResponseEntity.ok().body(dto);
 	}
 	
+	@GetMapping(value = "/specialty/{specialty}")
+	public ResponseEntity<List<DoctorDTO>> findBySpecialty(@Valid @PathVariable Long specialty){
+		List<DoctorDTO> doctors = service.findBySpecialty(specialty);
+		
+		return ResponseEntity.ok().body(doctors);
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<DoctorDTO>> search(@SearchSpec Specification<Doctor> specs){
 	    

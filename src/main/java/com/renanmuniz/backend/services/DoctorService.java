@@ -52,6 +52,15 @@ public class DoctorService {
 	}
 	
 	@Transactional(readOnly = true)
+	public List<DoctorDTO> findBySpecialty(Long specialty) {
+		Specialty spec = specialtyRepository.getOne(specialty);
+		
+		List<Doctor> doctors = repository.findBySpecialty(spec);
+		
+		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
 	public List<DoctorDTO> search(Specification<Doctor> specs){
 		List<Doctor> doctors = repository.findAll(Specification.where(specs));
 		
@@ -71,6 +80,21 @@ public class DoctorService {
 	
 	@Transactional
 	public DoctorDTO update(Long id, DoctorInsertDTO dto) {
+		try {
+			Doctor entity = repository.getOne(id); 
+			convertDtoToEntity(dto, entity);
+			
+			entity.setAddress(addressService.findAddressByCep(dto.getCep()));
+			entity = repository.save(entity);
+			
+			return new DoctorDTO(entity, entity.getSpecialties());
+		}catch (ResourceNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found: " + id);
+		}
+	}
+	
+	@Transactional
+	public DoctorDTO patch(Long id, DoctorInsertDTO dto) {
 		try {
 			Doctor entity = repository.getOne(id); 
 			convertDtoToEntity(dto, entity);
