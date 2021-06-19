@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.renanmuniz.backend.services.exceptions.AddressNotFoundException;
 import com.renanmuniz.backend.services.exceptions.DataBaseException;
 import com.renanmuniz.backend.services.exceptions.ResourceNotFoundException;
 
@@ -39,6 +40,20 @@ public class ResourceExceptionHandler {
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
 		err.setError("DataBase exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(AddressNotFoundException.class)
+	public ResponseEntity<StandardError> addressNotFound(AddressNotFoundException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Address not found");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 

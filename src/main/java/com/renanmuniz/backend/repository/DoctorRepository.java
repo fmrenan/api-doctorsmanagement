@@ -12,6 +12,6 @@ import com.renanmuniz.backend.entities.Doctor;
 @RepositoryRestResource
 public interface DoctorRepository extends JpaRepository<Doctor, Long>, JpaSpecificationExecutor<Doctor> {
 
-	@Query(value = "SELECT * FROM tb_doctor d WHERE d.active = 'true'", nativeQuery = true)
+	@Query(value = "SELECT * FROM doctors d WHERE d.active = 'true'", nativeQuery = true)
 	public List<Doctor> findAllActive();
 }

@@ -12,10 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_doctor")
+@Table(name = "doctors")
 public class Doctor implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -30,20 +31,25 @@ public class Doctor implements Serializable{
 	private boolean active = true;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_doctor_specialty",
+	@JoinTable(name = "doctor_specialty",
 		joinColumns = @JoinColumn(name = "doctor_id"),
 		inverseJoinColumns = @JoinColumn(name = "specialty_id"))	
 	private Set<Specialty> specialties =  new HashSet<>();
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "address_id")
+	private Address address;
+	
 	public Doctor() {}
 
-	public Doctor(Long id, String name, String crm, String phone, String cellPhone, String cep) {
+	public Doctor(Long id, String name, String crm, String phone, String cellPhone, String cep, Address address) {
 		this.id = id;
 		this.name = name;
 		this.crm = crm;
 		this.phone = phone;
 		this.cellPhone = cellPhone;
 		this.cep = cep;
+		this.address = address;
 	}
 
 	public boolean isActive() {
@@ -104,6 +110,14 @@ public class Doctor implements Serializable{
 
 	public Set<Specialty> getSpecialties() {
 		return specialties;
+	}
+	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override

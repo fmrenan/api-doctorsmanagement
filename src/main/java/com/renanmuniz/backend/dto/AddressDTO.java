@@ -2,6 +2,8 @@ package com.renanmuniz.backend.dto;
 
 import java.io.Serializable;
 
+import com.renanmuniz.backend.entities.Address;
+
 public class AddressDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -11,27 +13,26 @@ public class AddressDTO implements Serializable{
 	private String bairro;
 	private String localidade;
 	private String uf;
-	private String unidade;
-	private String ibge;
-	private String gia;
-	private String siafi;
 	
 	public AddressDTO() {}
 
-	public AddressDTO(String cep, String logradouro, String complemento, String bairro, String localidade, String uf,
-			String unidade, String ibge, String gia, String siafi) {
+	public AddressDTO(String cep, String logradouro, String complemento, String bairro, String localidade, String uf) {
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.localidade = localidade;
 		this.uf = uf;
-		this.unidade = unidade;
-		this.ibge = ibge;
-		this.gia = gia;
-		this.siafi = siafi;
 	}
 
+	public AddressDTO(Address entity) {
+		this.cep = entity.getCep();
+		this.logradouro = entity.getLogradouro();
+		this.complemento = entity.getComplemento();
+		this.bairro = entity.getBairro();
+		this.localidade = entity.getLocalidade();
+		this.uf = entity.getUf();
+	}
 	
 	public String getCep() {
 		return cep;
@@ -80,64 +81,5 @@ public class AddressDTO implements Serializable{
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-
-	public String getUnidade() {
-		return unidade;
-	}
-
-	public void setUnidade(String unidade) {
-		this.unidade = unidade;
-	}
-
-	public String getIbge() {
-		return ibge;
-	}
-
-	public void setIbge(String ibge) {
-		this.ibge = ibge;
-	}
-
-	public String getGia() {
-		return gia;
-	}
-
-	public void setGia(String gia) {
-		this.gia = gia;
-	}
-
-	public String getSiafi() {
-		return siafi;
-	}
-
-	public void setSiafi(String siafi) {
-		this.siafi = siafi;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AddressDTO other = (AddressDTO) obj;
-		if (cep == null) {
-			if (other.cep != null)
-				return false;
-		} else if (!cep.equals(other.cep))
-			return false;
-		return true;
-	};
-	
-	
 	
 }

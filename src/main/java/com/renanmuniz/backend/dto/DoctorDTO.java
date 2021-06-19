@@ -33,23 +33,21 @@ public class DoctorDTO implements Serializable{
 	@Digits(fraction = 0, integer = 12, message="Deve ser um número com no máximo 12 dígitos")
 	private String cellPhone;
 	
-	@NotBlank(message = "Não pode ser vazio")
-	@Digits(fraction = 0, integer = 8, message="Deve ser um número com no máximo 12 dígitos")
-	private String cep;
-	
 	@NotNull
 	@Size(min = 2, message="Deve conter pelo menos duas especialidades")
 	private Set<SpecialtyDTO> specialties = new HashSet<>();
 	
+	private AddressDTO address;
+	
 	public DoctorDTO() {};
 	
-	public DoctorDTO(Long id, String name, String crm, String phone, String cellPhone, String cep) {
+	public DoctorDTO(Long id, String name, String crm, String phone, String cellPhone, AddressDTO address) {
 		this.id = id;
 		this.name = name;
 		this.crm = crm;
 		this.phone = phone;
 		this.cellPhone = cellPhone;
-		this.cep = cep;
+		this.address = address;
 	}
 	
 	public DoctorDTO(Doctor entity) {
@@ -58,7 +56,7 @@ public class DoctorDTO implements Serializable{
 		crm = entity.getCrm();
 		phone = entity.getPhone();
 		cellPhone = entity.getCellPhone();
-		cep = entity.getCep();
+		address = new AddressDTO(entity.getAddress());
 	}
 	
 	public DoctorDTO(Doctor entity, Set<Specialty> specialties) {
@@ -107,19 +105,16 @@ public class DoctorDTO implements Serializable{
 		this.cellPhone = cellPhone;
 	}
 
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
 	public Set<SpecialtyDTO> getSpecialties() {
 		return specialties;
 	}
-	
-	
-	
+
+	public AddressDTO getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressDTO address) {
+		this.address = address;
+	}
 	
 }

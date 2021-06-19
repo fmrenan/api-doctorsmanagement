@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.renanmuniz.backend.dto.DoctorDTO;
-import com.renanmuniz.backend.dto.DoctorResponseDTO;
+import com.renanmuniz.backend.dto.DoctorInsertDTO;
 import com.renanmuniz.backend.entities.Doctor;
 import com.renanmuniz.backend.services.DoctorService;
 import com.sipios.springsearch.anotation.SearchSpec;
@@ -48,8 +48,8 @@ public class DoctorResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<DoctorResponseDTO> insert(@Valid @RequestBody DoctorDTO dto){
-		DoctorResponseDTO newDto = service.insert(dto);
+	public ResponseEntity<DoctorDTO> insert(@Valid @RequestBody DoctorInsertDTO dto){
+		DoctorDTO newDto = service.insert(dto);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(newDto.getId()).toUri();
@@ -58,10 +58,10 @@ public class DoctorResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<DoctorDTO> update(@PathVariable Long id, @RequestBody DoctorDTO dto){
-		dto = service.update(id, dto);
+	public ResponseEntity<DoctorDTO> update(@PathVariable Long id, @RequestBody DoctorInsertDTO dto){
+		DoctorDTO newDto = service.update(id, dto);
 		
-		return ResponseEntity.ok().body(dto);
+		return ResponseEntity.ok().body(newDto);
 	}
 	
 	@DeleteMapping(value = "/{id}")

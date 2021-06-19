@@ -1,8 +1,8 @@
-INSERT INTO tb_specialty (name) VALUES('Alergologia');
-INSERT INTO tb_specialty (name) VALUES('Angiologia');
-INSERT INTO tb_specialty (name) VALUES('Buco maxilo');
-INSERT INTO tb_specialty (name) VALUES('Cardiologia clínca');
-INSERT INTO tb_specialty (name) VALUES('Cardiologia infantil');
-INSERT INTO tb_specialty (name) VALUES('Cirurgia cabeça e pescoço');
-INSERT INTO tb_specialty (name) VALUES('Cirurgia cardíaca');
-INSERT INTO tb_specialty (name) VALUES('Cirurgia de tórax');
+INSERT INTO specialties (name) VALUES('Alergologia');
+INSERT INTO specialties (name) VALUES('Angiologia');
+INSERT INTO specialties (name) VALUES('Buco maxilo');
+INSERT INTO specialties (name) VALUES('Cardiologia clínca');
+INSERT INTO specialties (name) VALUES('Cardiologia infantil');
+INSERT INTO specialties (name) VALUES('Cirurgia cabeça e pescoço');
+INSERT INTO specialties (name) VALUES('Cirurgia cardíaca');
+INSERT INTO specialties (name) VALUES('Cirurgia de tórax');

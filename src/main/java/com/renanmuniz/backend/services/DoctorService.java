@@ -1,5 +1,6 @@
 package com.renanmuniz.backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,9 +12,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.renanmuniz.backend.dto.AddressDTO;
 import com.renanmuniz.backend.dto.DoctorDTO;
-import com.renanmuniz.backend.dto.DoctorResponseDTO;
+import com.renanmuniz.backend.dto.DoctorInsertDTO;
 import com.renanmuniz.backend.dto.SpecialtyDTO;
 import com.renanmuniz.backend.entities.Doctor;
 import com.renanmuniz.backend.entities.Specialty;
@@ -55,24 +55,22 @@ public class DoctorService {
 	public List<DoctorDTO> search(Specification<Doctor> specs){
 		List<Doctor> doctors = repository.findAll(Specification.where(specs));
 		
-		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());
+		return getActive(doctors);
 	}
 	
 	@Transactional
-	public DoctorResponseDTO insert(DoctorDTO dto) {
-		
+	public DoctorDTO insert(DoctorInsertDTO dto) {
 		Doctor entity = new Doctor(); 
 		convertDtoToEntity(dto, entity);
 		
+		entity.setAddress(addressService.findAddressByCep(dto.getCep()));
 		entity = repository.save(entity);
 		
-		AddressDTO address = addressService.getAddressByCep(dto.getCep());
-		
-		return new DoctorResponseDTO(entity, entity.getSpecialties(), address);
+		return new DoctorDTO(entity, entity.getSpecialties());
 	}
 	
 	@Transactional
-	public DoctorDTO update(Long id, DoctorDTO dto) {
+	public DoctorDTO update(Long id, DoctorInsertDTO dto) {
 		try {
 			Doctor entity = repository.getOne(id); 
 			convertDtoToEntity(dto, entity);
@@ -109,7 +107,7 @@ public class DoctorService {
 		}
 	}
 	
-	private void convertDtoToEntity(DoctorDTO dto, Doctor entity) {
+	private void convertDtoToEntity(DoctorInsertDTO dto, Doctor entity) {
 		entity.setName(dto.getName());
 		entity.setCrm(dto.getCrm());
 		entity.setPhone(dto.getPhone());
@@ -122,6 +120,22 @@ public class DoctorService {
 			
 			entity.getSpecialties().add(specialty);
 		}		
+	}
+	
+	private List<DoctorDTO> getActive(List<Doctor> doctors) {
+		List<Doctor> aux = new ArrayList<>();
+		
+		for(Doctor doc : doctors) {
+			aux.add(doc);
+		}		
+		
+		for(Doctor doc : aux) {
+			if(!doc.isActive()) {
+				doctors.remove(doc);
+			}
+		}	
+		
+		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());
 	}
 
 	
