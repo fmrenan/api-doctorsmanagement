@@ -27,7 +27,6 @@ public class Doctor implements Serializable{
 	private String crm;
 	private String phone;
 	private String cellPhone;
-	private String cep;
 	private boolean active = true;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -42,13 +41,12 @@ public class Doctor implements Serializable{
 	
 	public Doctor() {}
 
-	public Doctor(Long id, String name, String crm, String phone, String cellPhone, String cep, Address address) {
+	public Doctor(Long id, String name, String crm, String phone, String cellPhone, Address address) {
 		this.id = id;
 		this.name = name;
 		this.crm = crm;
 		this.phone = phone;
 		this.cellPhone = cellPhone;
-		this.cep = cep;
 		this.address = address;
 	}
 
@@ -98,14 +96,6 @@ public class Doctor implements Serializable{
 
 	public void setCellPhone(String cellPhone) {
 		this.cellPhone = cellPhone;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
 	}
 
 	public Set<Specialty> getSpecialties() {

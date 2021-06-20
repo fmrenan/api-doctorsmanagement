@@ -23,7 +23,7 @@ public class DoctorInsertDTO extends DoctorDTO implements Serializable{
 	
 	public DoctorInsertDTO(Doctor entity) {
 		super(entity);
-		cep = entity.getCep();
+		cep = entity.getAddress().getCep();
 	}
 	
 	public String getCep() {
