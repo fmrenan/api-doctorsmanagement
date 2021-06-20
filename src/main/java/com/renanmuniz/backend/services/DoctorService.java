@@ -17,8 +17,8 @@ import com.renanmuniz.backend.dto.DoctorInsertDTO;
 import com.renanmuniz.backend.dto.SpecialtyDTO;
 import com.renanmuniz.backend.entities.Doctor;
 import com.renanmuniz.backend.entities.Specialty;
-import com.renanmuniz.backend.repository.DoctorRepository;
-import com.renanmuniz.backend.repository.SpecialtyRepository;
+import com.renanmuniz.backend.repositories.DoctorRepository;
+import com.renanmuniz.backend.repositories.SpecialtyRepository;
 import com.renanmuniz.backend.services.exceptions.DataBaseException;
 import com.renanmuniz.backend.services.exceptions.ResourceNotFoundException;
 
@@ -94,20 +94,6 @@ public class DoctorService {
 	}
 	
 	@Transactional
-	public DoctorDTO patch(Long id, DoctorInsertDTO dto) {
-		try {
-			Doctor entity = repository.getOne(id); 
-			convertDtoToEntity(dto, entity);
-			
-			entity = repository.save(entity);
-			
-			return new DoctorDTO(entity, entity.getSpecialties());
-		}catch (ResourceNotFoundException e) {
-			throw new ResourceNotFoundException("Id not found: " + id);
-		}
-	}
-	
-	@Transactional
 	public void softDelete(Long id) {
 		try {
 			Doctor entity = repository.getOne(id); 
@@ -136,7 +122,6 @@ public class DoctorService {
 		entity.setCrm(dto.getCrm());
 		entity.setPhone(dto.getPhone());
 		entity.setCellPhone(dto.getCellPhone());
-		entity.setCep(dto.getCep());
 		entity.getSpecialties().clear();
 		
 		for(SpecialtyDTO specDto : dto.getSpecialties()) {

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.renanmuniz.backend.entities.Address;
-import com.renanmuniz.backend.repository.AddressRepository;
+import com.renanmuniz.backend.repositories.AddressRepository;
 import com.renanmuniz.backend.services.exceptions.AddressNotFoundException;
 
 @Service
