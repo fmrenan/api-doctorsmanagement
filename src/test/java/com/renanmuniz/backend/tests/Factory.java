@@ -33,6 +33,8 @@ public class Factory {
 	public static DoctorInsertDTO createDoctorInsertDTO() {
 		DoctorInsertDTO insertDto = new DoctorInsertDTO(createDoctor());
 		insertDto.setCep("29315736");
+		insertDto.setAddress(null);
+		insertDto.setId(null);
 		
 		return insertDto;
 	}
