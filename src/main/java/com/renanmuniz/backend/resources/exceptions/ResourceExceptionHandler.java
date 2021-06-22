@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.renanmuniz.backend.services.exceptions.AddressNotFoundException;
 import com.renanmuniz.backend.services.exceptions.DataBaseException;
@@ -54,6 +55,20 @@ public class ResourceExceptionHandler {
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
 		err.setError("Address not found");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(HttpClientErrorException.class)
+	public ResponseEntity<StandardError> addressNotFound(HttpClientErrorException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(status.value());
+		err.setError("Invalid Address");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 

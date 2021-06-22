@@ -11,7 +11,7 @@ public class DoctorInsertDTO extends DoctorDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@NotBlank(message = "Não pode ser vazio")
-	@Digits(fraction = 0, integer = 8, message="Deve ser um número com no máximo 12 dígitos")
+	@Digits(fraction = 0, integer = 8, message="Deve ser um número com no máximo 8 dígitos")
 	private String cep;
 	
 	public DoctorInsertDTO() {};
