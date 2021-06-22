@@ -12,16 +12,29 @@ git clone https://github.com/fmrenan/api-gerenciamentoImoveis.git
 Importar como projeto maven no SpringTool Suite e executar.
 
 ## Realizar Requisições
-Importar arquivo json do insomnia no diretório /insomnia
+Importar arquivo json do insomnia no diretório [/insomnia](https://github.com/fmrenan/api-doctorsmanagement/blob/main/insomnia/Insomnia_2021-06-22.json)
 
 ## Recursos disponíveis
 Existem os seguintes recursos que poderão ser acessados pelos métodos GET, POST, PUT e DELETE:<br>
-#### Médicos (users) - /doctors
+#### Médicos (doctors) - `/doctors`
 
 ## Formato dos Dados
 Todos os dados enviados e recebidos pela API estão em JSON (application/json).
 
+## GET Listar Médicos
+`/doctors`
+
+## GET Listar um Médico
+`/doctors/{id}`
+
+## GET Buscar um Médico por atributos - Todos atributos são opcionais
+```bash
+/doctors?name=Nome&crm=CRM&phone=TELEFONE&cellPhone=CELULAR&cep=CEP&specialty=Nome da especialidade
+```
+
 ## POST Cadastrar Médico
+/doctors
+##### Corpo da requisição: 
 Parâmetros | Descrição
 :-------   | :------
 name       | Nome completo do Médico  - [Máximo de 120 caracteres]
