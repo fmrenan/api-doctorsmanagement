@@ -66,4 +66,4 @@ specialities | Especialidades -         [Array com id de pelo menos duas especia
 
 #### 404: Not Found
 `Error: Address not found` Motivo: CEP não encontrado<br>
-`Error: Resource not found` Motivo: Não encontrado com Id informado
+`Error: Resource not found` Motivo: Recurso não encontrado com Id informado
