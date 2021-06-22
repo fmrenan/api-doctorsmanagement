@@ -1,5 +1,8 @@
 package com.renanmuniz.backend.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -15,7 +18,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,7 +39,7 @@ public class DoctorServiceTests {
 	private Long nonExistingId;
 	private Doctor doctor;
 	private Specialty specialty;
-	private List<Doctor> doctors;
+	private List<Doctor> doctors = new ArrayList<>();
 	private DoctorInsertDTO doctorInsertDTO;
 	
 	@InjectMocks
@@ -57,21 +59,20 @@ public class DoctorServiceTests {
 		doctor = Factory.createDoctor();
 		specialty = Factory.createSpecialty();
 		doctorInsertDTO = Factory.createDoctorInsertDTO();
-		doctors = new ArrayList<>();
+		doctors.add(doctor);
 		
-		when(repository.findAllActive()).thenReturn(doctors);
-		when(repository.save(ArgumentMatchers.any())).thenReturn(doctor);
+		when(repository.findAll(null, null, null, null, null, null)).thenReturn(doctors);
+		when(repository.findAll(null, null, null, null, specialty, null)).thenReturn(doctors);
+		
+		when(repository.save(any())).thenReturn(doctor);
 		
 		when(repository.findById(existingId)).thenReturn(Optional.of(doctor));
 		when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
 		
-		when(repository.findBySpecialty(specialty)).thenReturn(doctors);
-		
 		when(repository.getOne(existingId)).thenReturn(doctor);
 		when(repository.getOne(nonExistingId)).thenThrow(EntityNotFoundException.class);
 		
-		when(specRepository.getOne(existingId)).thenReturn(specialty);
-		when(specRepository.getOne(nonExistingId)).thenThrow(EntityNotFoundException.class);
+		when(specRepository.findByName(specialty.getName())).thenReturn(specialty);
 		
 		doNothing().when(repository).deleteById(existingId);
 		doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
@@ -79,10 +80,11 @@ public class DoctorServiceTests {
 	
 	@Test
 	public void findAllShouldReturnListOfDoctorDTO() {
-		List<DoctorDTO> result = service.findAll();
+		List<DoctorDTO> result = service.findAll("0", "0", "0", "0", "0", "0");
 		
-		Assertions.assertNotNull(result);
-		verify(repository).findAllActive();
+		assertNotNull(result);
+		assertEquals(1, result.size());
+		verify(repository).findAll(null, null, null, null, null, null);
 		
 	}
 	
@@ -103,17 +105,10 @@ public class DoctorServiceTests {
 	
 	@Test
 	public void findBySpecialtyShouldReturnListOfDoctorDTOWhenSpecialtyExists() {
-		List<DoctorDTO> result = service.findBySpecialty(specialty.getId());
+		List<DoctorDTO> result = service.findAll("0", "0", "0", "0", specialty.getName(), "0");
 		
 		Assertions.assertNotNull(result);
-		verify(repository).findBySpecialty(specialty);		
-	}
-	
-	@Test
-	public void findBySpecialtyThrowEntityNotFoundExceptionWhenSpecialtyDoesNotExists() {
-		Assertions.assertThrows(EntityNotFoundException.class, () -> {
-			service.findBySpecialty(nonExistingId);
-		});			
+		verify(repository).findAll(null, null, null, null, specialty, null);		
 	}
 	
 	@Test

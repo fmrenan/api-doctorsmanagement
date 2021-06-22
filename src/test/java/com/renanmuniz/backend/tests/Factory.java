@@ -22,8 +22,8 @@ public class Factory {
 	}	
 	
 	public static Address createAddress() {
-		return  new Address("29315736", "Valentim Fullin", "", "Jardim Itapemirim", 
-				"Cachoeiro de Itapemirim", "ES", "", "", "", "");
+		return  new Address("08090284", "Rua 03 de Outubro", "(Ch Três Meninas)", "Jardim Helena", 
+				"São Paulo", "SP", "", "3550308", "1004", "7107");
 	}
 	
 	public static Specialty createSpecialty() {
@@ -37,6 +37,11 @@ public class Factory {
 		insertDto.setId(null);
 		
 		return insertDto;
+	}
+
+	public static Address createValidAddress() {
+		return  new Address("29315-736", "Rua Valentim Fullin", "", "Jardim Itapemirim", 
+				"Cachoeiro de Itapemirim", "ES", "", "", "", "");
 	}
 	
 }
