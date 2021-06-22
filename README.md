@@ -33,7 +33,7 @@ Todos os dados enviados e recebidos pela API estão em JSON (application/json).
 ```
 
 ## POST Cadastrar Médico
-/doctors
+`/doctors`
 ##### Corpo da requisição: 
 Parâmetros | Descrição
 :-------   | :------
