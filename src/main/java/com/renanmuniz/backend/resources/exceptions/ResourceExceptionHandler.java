@@ -78,7 +78,7 @@ public class ResourceExceptionHandler {
 	
 	@ExceptionHandler(HttpClientErrorException.class)
 	public ResponseEntity<StandardError> addressNotFound(HttpClientErrorException e, HttpServletRequest request) {
-		HttpStatus status = HttpStatus.NOT_FOUND;
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 		
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
