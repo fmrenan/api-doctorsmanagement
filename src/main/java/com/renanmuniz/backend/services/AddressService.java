@@ -1,5 +1,8 @@
 package com.renanmuniz.backend.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,13 +18,18 @@ public class AddressService {
 	@Autowired
 	private AddressRepository repository;
 	
-	private RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	private RestTemplate restTemplate;	
 	
+	private String host = "https://viacep.com.br/ws/";
+	private String hostFormat = "/json/";
 
     private Address getAddressFromApi(String cep) {
+    	Map<String, String> uriVariables = new HashMap<>();
+    	uriVariables.put("cep", cep);    	
 
-        ResponseEntity<Address> resp = restTemplate.getForEntity("https://viacep.com.br/ws/"+cep+"/json/" ,
-          Address.class);
+        ResponseEntity<Address> resp = restTemplate.getForEntity(host + "{cep}" + hostFormat ,
+          Address.class, uriVariables);
         
         if(resp.getBody().getCep() == null) {
         	throw new AddressNotFoundException("CEP não encontrado");
@@ -36,6 +44,7 @@ public class AddressService {
     	if(obj == null ) {
     		obj = getAddressFromApi(cep);
     		obj.setCep(formataCep(obj.getCep()));
+    		obj.setId(null);
     		obj = insert(obj);
     	}    	
     	
