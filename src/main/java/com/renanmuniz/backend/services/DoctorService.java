@@ -1,6 +1,5 @@
 package com.renanmuniz.backend.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +31,16 @@ public class DoctorService {
 	private AddressService addressService;
 	
 	@Transactional(readOnly = true)
-	public List<DoctorDTO> findAll() {
-		List<Doctor> doctors = repository.findAllActive();
+	public List<DoctorDTO> findAll(String name, String crm, String phone, String cellPhone, String specialtyName, String cep) {
+		name = (name.equals("0")) ? null : name;
+		crm = (crm.equals("0")) ? null : crm;
+		phone = (phone.equals("0")) ? null : phone;
+		cellPhone = (cellPhone.equals("0")) ? null : cellPhone;
+		cep = (cep.equals("0")) ? null : cep;
+		
+		Specialty specialty = (specialtyName.equals("0")) ? null : specialtyRepository.findByName(specialtyName);
+		
+		List<Doctor> doctors = repository.findAll(name, crm, phone, cellPhone, specialty, cep);
 		
 		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());		
 	}
@@ -49,22 +55,6 @@ public class DoctorService {
 		}
 		
 		return new DoctorDTO(entity, entity.getSpecialties());
-	}
-	
-	@Transactional(readOnly = true)
-	public List<DoctorDTO> findBySpecialty(Long specialty) {
-		Specialty spec = specialtyRepository.getOne(specialty);
-		
-		List<Doctor> doctors = repository.findBySpecialty(spec);
-		
-		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());
-	}
-	
-	@Transactional(readOnly = true)
-	public List<DoctorDTO> search(Specification<Doctor> specs){
-		List<Doctor> doctors = repository.findAll(Specification.where(specs));
-		
-		return getActive(doctors);
 	}
 	
 	@Transactional
@@ -130,22 +120,5 @@ public class DoctorService {
 			entity.getSpecialties().add(specialty);
 		}		
 	}
-	
-	private List<DoctorDTO> getActive(List<Doctor> doctors) {
-		List<Doctor> aux = new ArrayList<>();
-		
-		for(Doctor doc : doctors) {
-			aux.add(doc);
-		}		
-		
-		for(Doctor doc : aux) {
-			if(!doc.isActive()) {
-				doctors.remove(doc);
-			}
-		}	
-		
-		return doctors.stream().map(doc -> new DoctorDTO(doc, doc.getSpecialties())).collect(Collectors.toList());
-	}
-
 	
 }

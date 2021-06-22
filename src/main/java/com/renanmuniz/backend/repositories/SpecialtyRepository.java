@@ -8,4 +8,6 @@ import com.renanmuniz.backend.entities.Specialty;
 @Repository
 public interface SpecialtyRepository extends JpaRepository<Specialty, Long>{
 
+	Specialty findByName(String name);
+	
 }
