@@ -1,5 +1,6 @@
 package com.renanmuniz.backend.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.renanmuniz.backend.entities.Doctor;
-import com.renanmuniz.backend.repositories.DoctorRepository;
 import com.renanmuniz.backend.tests.Factory;
 
 @DataJpaTest
@@ -32,13 +32,11 @@ public class DoctorRepositoryTests {
 	}
 	
 	@Test
-	public void saveShouldPersistWithAutoIncrementWhenIdIsNull() {
-		doctor.setId(null);
-		
-		doctor = repository.save(doctor);
-		
-		Assertions.assertNotNull(doctor.getId());
-		Assertions.assertEquals(totalDoctors + 1, doctor.getId());
+	public void findAlllShouldReturnAListOfDoctors() {
+		List<Doctor> result = repository.findAll();
+
+		Assertions.assertFalse(result.isEmpty());
+		Assertions.assertTrue(result.size() == totalDoctors);
 	}
 
 	@Test
@@ -46,6 +44,16 @@ public class DoctorRepositoryTests {
 		Optional<Doctor> result = repository.findById(existingId);
 
 		Assertions.assertTrue(result.isPresent());
+	}
+
+	@Test
+	public void saveShouldPersistWithAutoIncrementWhenIdIsNull() {
+		doctor.setId(null);
+		
+		doctor = repository.save(doctor);
+		
+		Assertions.assertNotNull(doctor.getId());
+		Assertions.assertEquals(totalDoctors + 1, doctor.getId());
 	}
 
 	@Test
