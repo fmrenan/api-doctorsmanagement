@@ -65,5 +65,5 @@ specialities | Especialidades -         [Array com id de pelo menos duas especia
 `Error: Invalid Address` Motivo: CEP inválido
 
 #### 404: Not Found
-`Error: Address Not Found` Motivo: CEP não encontrado<br>
-`Resource not found` Motivo: Não encontrado com Id informado
+`Error: Address not found` Motivo: CEP não encontrado<br>
+`Error: Resource not found` Motivo: Não encontrado com Id informado
