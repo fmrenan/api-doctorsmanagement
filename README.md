@@ -1,19 +1,69 @@
-# Getting Started
+# API Gerenciamento de Médicos
+API RESTful para uma plataforma simples de gerenciamento de médicos.<br>
+Banco de dados H2 foi utilizado para testes 
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## Endpoint
+O endpoint de conexão com a API REST está no endereço: http://localhost:8080
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.5.1/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.5.1/maven-plugin/reference/html/#build-image)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.1/reference/htmlsingle/#boot-features-jpa-and-spring-data)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.1/reference/htmlsingle/#boot-features-developing-web-applications)
+## Execução
+```bash
+git clone https://github.com/fmrenan/api-gerenciamentoImoveis.git
+```
+Importar como projeto maven no SpringTool Suite e executar.
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## Realizar Requisições
+Importar arquivo json do insomnia no diretório [/insomnia](https://github.com/fmrenan/api-doctorsmanagement/blob/main/insomnia/Insomnia_2021-06-22.json)
 
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+## Recursos disponíveis
+Existem os seguintes recursos que poderão ser acessados pelos métodos GET, POST, PUT e DELETE:<br>
+#### Médicos (doctors) - `/doctors`
 
+## Formato dos Dados
+Todos os dados enviados e recebidos pela API estão em JSON (application/json).
+
+## GET Listar Médicos
+`/doctors`
+
+## GET Listar um Médico
+`/doctors/{id}`
+
+## GET Buscar um Médico por atributos - Todos atributos são opcionais
+```bash
+/doctors?name=Nome&crm=CRM&phone=TELEFONE&cellPhone=CELULAR&cep=CEP&specialty=Nome da especialidade
+```
+
+## POST Cadastrar Médico
+`/doctors`
+##### Corpo da requisição: 
+Parâmetros | Descrição
+:-------   | :------
+name       | Nome completo do Médico  - [Máximo de 120 caracteres]
+crm        | CRM do médico -            [Números de no máximo 7 dígitos]
+phone      | Telefone -                 [Números de no máximo 12 dígitos]
+cellPhone  | Celular -                  [Números de no máximo 12 dígitos]
+cep        | Cep -                      [Números de no máximo 8 dígitos]
+specialities | Especialidades -         [Array com id de pelo menos duas especialidades]
+
+## PUT Atualizar Médico
+`/doctors/{id}`
+##### Corpo da requisição: 
+Parâmetros | Descrição
+:-------   | :------
+name       | Nome completo do Médico  - [Máximo de 120 caracteres]
+crm        | CRM do médico -            [Números de no máximo 7 dígitos]
+phone      | Telefone -                 [Números de no máximo 12 dígitos]
+cellPhone  | Celular -                  [Números de no máximo 12 dígitos]
+cep        | Cep -                      [Números de no máximo 8 dígitos]
+specialities | Especialidades -         [Array com id de pelo menos duas especialidades]
+
+## DELETE Excluir um Médico - Soft Delete
+`/doctors/{id}`
+
+## Possíveis Exceções: 
+#### 422: Unprocessable Entity
+`Error: Argument Exception` Motivo: Algum dos campos não atende às validações necessárias<br>
+`Error: Invalid Address` Motivo: CEP inválido
+
+#### 404: Not Found
+`Error: Address not found` Motivo: CEP não encontrado<br>
+`Error: Resource not found` Motivo: Recurso não encontrado com Id informado
