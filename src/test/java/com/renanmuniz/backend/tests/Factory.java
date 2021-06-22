@@ -11,6 +11,7 @@ public class Factory {
 	public static Doctor createDoctor() {
 		Doctor doctor = new Doctor(1L, "José", "1234567", "2830451020", "28999000099", createAddress());
 		doctor.getSpecialties().add(createSpecialty());
+		doctor.getSpecialties().add(createSecondSpecialty());
 		
 		return doctor;		
 	}
@@ -29,9 +30,13 @@ public class Factory {
 	public static Specialty createSpecialty() {
 		 return new Specialty(1L, "Alergologia");
 	}
+	public static Specialty createSecondSpecialty() {
+		 return new Specialty(2L, "Angiologia");
+	}
 
 	public static DoctorInsertDTO createDoctorInsertDTO() {
-		DoctorInsertDTO insertDto = new DoctorInsertDTO(createDoctor());
+		Doctor entity = createDoctor();		
+		DoctorInsertDTO insertDto = new DoctorInsertDTO(entity);
 		insertDto.setCep("29315736");
 		insertDto.setAddress(null);
 		insertDto.setId(null);

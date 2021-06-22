@@ -72,7 +72,7 @@ public class DoctorResource {
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		service.softDelete(id);
 		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 	
 }
