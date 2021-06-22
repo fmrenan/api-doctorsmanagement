@@ -43,3 +43,27 @@ phone      | Telefone -                 [Números de no máximo 12 dígitos]
 cellPhone  | Celular -                  [Números de no máximo 12 dígitos]
 cep        | Cep -                      [Números de no máximo 8 dígitos]
 specialities | Especialidades -         [Array com id de pelo menos duas especialidades]
+
+## PUT Atualizar Médico
+`/doctors/{id}`
+##### Corpo da requisição: 
+Parâmetros | Descrição
+:-------   | :------
+name       | Nome completo do Médico  - [Máximo de 120 caracteres]
+crm        | CRM do médico -            [Números de no máximo 7 dígitos]
+phone      | Telefone -                 [Números de no máximo 12 dígitos]
+cellPhone  | Celular -                  [Números de no máximo 12 dígitos]
+cep        | Cep -                      [Números de no máximo 8 dígitos]
+specialities | Especialidades -         [Array com id de pelo menos duas especialidades]
+
+## DELETE Excluir um Médico - Soft Delete
+`/doctors/{id}`
+
+## Possíveis Exceções: 
+#### 422: Unprocessable Entity
+`Error: Argument Exception` Motivo: Algum dos campos não atende às validações necessárias<br>
+`Error: Invalid Address` Motivo: CEP inválido
+
+#### 404: Not Found
+`Error: Address Not Found` Motivo: CEP não encontrado<br>
+`Resource not found` Motivo: Não encontrado com Id informado
