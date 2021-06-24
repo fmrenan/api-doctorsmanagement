@@ -42,7 +42,7 @@ crm        | CRM do médico -            [Números de no máximo 7 dígitos]
 phone      | Telefone -                 [Números de no máximo 12 dígitos]
 cellPhone  | Celular -                  [Números de no máximo 12 dígitos]
 cep        | Cep -                      [Números de no máximo 8 dígitos]
-specialities | Especialidades -         [Array com id de pelo menos duas especialidades]
+specialties | Especialidades -         [Array com id de pelo menos duas especialidades]
 
 ## PUT Atualizar Médico
 `/doctors/{id}`
@@ -54,7 +54,7 @@ crm        | CRM do médico -            [Números de no máximo 7 dígitos]
 phone      | Telefone -                 [Números de no máximo 12 dígitos]
 cellPhone  | Celular -                  [Números de no máximo 12 dígitos]
 cep        | Cep -                      [Números de no máximo 8 dígitos]
-specialities | Especialidades -         [Array com id de pelo menos duas especialidades]
+specialties | Especialidades -         [Array com id de pelo menos duas especialidades]
 
 ## DELETE Excluir um Médico - Soft Delete
 `/doctors/{id}`
